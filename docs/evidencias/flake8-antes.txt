@@ -1,0 +1,17 @@
+src/main.py:19:9: E722 do not use bare 'except'
+src/main.py:27:80: E501 line too long (82 > 79 characters)
+src/main.py:32:80: E501 line too long (81 > 79 characters)
+src/main.py:39:5: C901 'GestorSolicitudes.registrar_solicitud' is too complex (8)
+src/main.py:49:80: E501 line too long (83 > 79 characters)
+src/main.py:59:80: E501 line too long (80 > 79 characters)
+src/main.py:62:80: E501 line too long (108 > 79 characters)
+src/main.py:65:5: C901 'GestorSolicitudes.cambiar_estado' is too complex (10)
+src/main.py:69:9: E722 do not use bare 'except'
+src/main.py:98:5: C901 'GestorSolicitudes.asignar_responsable' is too complex (10)
+src/main.py:102:9: E722 do not use bare 'except'
+src/main.py:127:5: C901 'GestorSolicitudes.buscar_solicitudes' is too complex (12)
+src/main.py:154:80: E501 line too long (152 > 79 characters)
+src/main.py:156:5: C901 'GestorSolicitudes.reporte' is too complex (10)
+src/main.py:172:33: E711 comparison to None should be 'if cond is None:'
+src/main.py:185:80: E501 line too long (160 > 79 characters)
+src/main.py:188:1: C901 'main' is too complex (8)
