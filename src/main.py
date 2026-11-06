@@ -2,6 +2,8 @@
 import json
 from datetime import date
 
+from modelos import Estado, NuevaSolicitud, Prioridad, Tipo
+
 ARCHIVO = "datos.json"
 
 
@@ -93,8 +95,8 @@ class GestorSolicitudes:
             return None
 
     def leer_tipo(self):
-        tipo = input("Tipo (CERTIFICADO/EQUIVALENCIA/CONSULTA): ").upper()
-        if tipo != "CERTIFICADO" and tipo != "EQUIVALENCIA" and tipo != "CONSULTA":
+        tipo = input("Tipo (" + "/".join(Tipo.TODOS) + "): ").upper()
+        if tipo not in Tipo.TODOS:
             print("Tipo invalido")
             return None
         return tipo
@@ -107,21 +109,22 @@ class GestorSolicitudes:
         return descripcion
 
     def leer_prioridad(self):
-        prioridad = input("Prioridad (ALTA/MEDIA/BAJA) [MEDIA]: ").upper()
+        prioridad = input("Prioridad (" + "/".join(Prioridad.TODAS) + ") [" +
+                          Prioridad.POR_DEFECTO + "]: ").upper()
         if prioridad == "":
-            prioridad = "MEDIA"
-        if prioridad != "ALTA" and prioridad != "MEDIA" and prioridad != "BAJA":
+            prioridad = Prioridad.POR_DEFECTO
+        if prioridad not in Prioridad.TODAS:
             print("Prioridad invalida")
             return None
         return prioridad
 
     # --- operaciones del sistema ---
 
-    def crear_solicitud(self, legajo, tipo, descripcion, prioridad, estado, responsable, fecha):
-        solicitud = {"id": self.siguiente_id(), "legajo": legajo, "tipo": tipo,
-                     "descripcion": descripcion, "prioridad": prioridad,
-                     "estado": estado, "responsable": responsable,
-                     "fecha": fecha}
+    def crear_solicitud(self, nueva):
+        solicitud = {"id": self.siguiente_id(), "legajo": nueva.legajo,
+                     "tipo": nueva.tipo, "descripcion": nueva.descripcion,
+                     "prioridad": nueva.prioridad, "estado": Estado.PENDIENTE,
+                     "responsable": None, "fecha": str(date.today())}
         self.datos["solicitudes"].append(solicitud)
         self.guardar()
         return solicitud["id"]
@@ -140,7 +143,8 @@ class GestorSolicitudes:
         prioridad = self.leer_prioridad()
         if prioridad is None:
             return
-        nuevo_id = self.crear_solicitud(legajo, tipo, descripcion, prioridad, "PENDIENTE", None, str(date.today()))
+        nueva = NuevaSolicitud(legajo, tipo, descripcion, prioridad)
+        nuevo_id = self.crear_solicitud(nueva)
         print("Solicitud registrada con id " + str(nuevo_id))
 
     def cambiar_estado(self):
@@ -151,15 +155,15 @@ class GestorSolicitudes:
         if solicitud is None:
             print("Solicitud no encontrada")
             return
-        nuevo = input("Nuevo estado (EN_PROCESO/RESUELTA/RECHAZADA): ").upper()
-        if solicitud["estado"] == "PENDIENTE":
-            if nuevo == "EN_PROCESO" or nuevo == "RECHAZADA":
+        nuevo = input("Nuevo estado (" + "/".join(Estado.DESTINOS) + "): ").upper()
+        if solicitud["estado"] == Estado.PENDIENTE:
+            if nuevo == Estado.EN_PROCESO or nuevo == Estado.RECHAZADA:
                 solicitud["estado"] = nuevo
             else:
                 print("Transicion no permitida")
                 return
-        elif solicitud["estado"] == "EN_PROCESO":
-            if nuevo == "RESUELTA" or nuevo == "RECHAZADA":
+        elif solicitud["estado"] == Estado.EN_PROCESO:
+            if nuevo == Estado.RESUELTA or nuevo == Estado.RECHAZADA:
                 solicitud["estado"] = nuevo
             else:
                 print("Transicion no permitida")
@@ -178,7 +182,7 @@ class GestorSolicitudes:
         if solicitud is None:
             print("Solicitud no encontrada")
             return
-        if solicitud["estado"] == "RESUELTA" or solicitud["estado"] == "RECHAZADA":
+        if solicitud["estado"] in Estado.CERRADOS:
             print("La solicitud ya esta cerrada")
             return
         id_responsable = input("Id del responsable: ")
@@ -207,15 +211,13 @@ class GestorSolicitudes:
     def reporte(self):
         print("=== REPORTE ===")
         print("Total de solicitudes: " + str(len(self.datos["solicitudes"])))
-        print("PENDIENTE: " + str(self.contar_por_estado("PENDIENTE")))
-        print("EN_PROCESO: " + str(self.contar_por_estado("EN_PROCESO")))
-        print("RESUELTA: " + str(self.contar_por_estado("RESUELTA")))
-        print("RECHAZADA: " + str(self.contar_por_estado("RECHAZADA")))
+        for estado in Estado.TODOS:
+            print(estado + ": " + str(self.contar_por_estado(estado)))
         print("Sin responsable asignado: " + str(self.contar_sin_responsable()))
         print("--- Pendientes por prioridad ---")
-        for prioridad in ["ALTA", "MEDIA", "BAJA"]:
+        for prioridad in Prioridad.TODAS:
             for solicitud in self.datos["solicitudes"]:
-                if solicitud["estado"] == "PENDIENTE" and solicitud["prioridad"] == prioridad:
+                if solicitud["estado"] == Estado.PENDIENTE and solicitud["prioridad"] == prioridad:
                     print(self.formatear_solicitud(solicitud))
 
 
