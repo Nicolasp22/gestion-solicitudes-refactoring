@@ -1,16 +1,16 @@
 # Sistema de gestion de solicitudes academicas
-import json
 from datetime import date
 
-from modelos import (Estado, Estudiante, NuevaSolicitud, Prioridad,
-                     Responsable, Solicitud, Tipo)
+from modelos import Estado, NuevaSolicitud, Prioridad, Solicitud, Tipo
+from repositorio import ErrorDeDatos, RepositorioJSON
 
 ARCHIVO = "datos.json"
 
 
 class GestorSolicitudes:
 
-    def __init__(self):
+    def __init__(self, repositorio):
+        self.repositorio = repositorio
         self.estudiantes = []
         self.responsables = []
         self.solicitudes = []
@@ -18,30 +18,15 @@ class GestorSolicitudes:
 
     def cargar(self):
         try:
-            archivo = open(ARCHIVO, "r", encoding="utf-8")
-            datos = json.load(archivo)
-            archivo.close()
-            estudiantes = [Estudiante.desde_diccionario(dato)
-                           for dato in datos["estudiantes"]]
-            responsables = [Responsable.desde_diccionario(dato)
-                            for dato in datos["responsables"]]
-            solicitudes = [Solicitud.desde_diccionario(dato)
-                           for dato in datos["solicitudes"]]
-            self.estudiantes = estudiantes
-            self.responsables = responsables
-            self.solicitudes = solicitudes
-        except:
-            print("No se pudo leer el archivo de datos")
+            datos = self.repositorio.cargar()
+        except ErrorDeDatos as error:
+            print(error)
+            return
+        self.estudiantes, self.responsables, self.solicitudes = datos
 
     def guardar(self):
-        datos = {
-            "estudiantes": [e.a_diccionario() for e in self.estudiantes],
-            "responsables": [r.a_diccionario() for r in self.responsables],
-            "solicitudes": [s.a_diccionario() for s in self.solicitudes],
-        }
-        archivo = open(ARCHIVO, "w", encoding="utf-8")
-        json.dump(datos, archivo, indent=2, ensure_ascii=False)
-        archivo.close()
+        self.repositorio.guardar(self.estudiantes, self.responsables,
+                                 self.solicitudes)
 
     # --- busquedas y calculos ---
 
@@ -220,7 +205,7 @@ class GestorSolicitudes:
 
 
 def main():
-    gestor = GestorSolicitudes()
+    gestor = GestorSolicitudes(RepositorioJSON(ARCHIVO))
     while True:
         print("")
         print("1. Registrar solicitud")
