@@ -1,6 +1,11 @@
 # Modelo del dominio de solicitudes academicas
 
 
+class ErrorDeNegocio(Exception):
+    # Error que se le muestra al usuario, por ejemplo "Tipo invalido"
+    pass
+
+
 class Estado:
     PENDIENTE = "PENDIENTE"
     EN_PROCESO = "EN_PROCESO"
@@ -21,6 +26,11 @@ class Tipo:
     CONSULTA = "CONSULTA"
     TODOS = [CERTIFICADO, EQUIVALENCIA, CONSULTA]
 
+    @staticmethod
+    def validar(tipo):
+        if tipo not in Tipo.TODOS:
+            raise ErrorDeNegocio("Tipo invalido")
+
 
 class Prioridad:
     ALTA = "ALTA"
@@ -28,6 +38,11 @@ class Prioridad:
     BAJA = "BAJA"
     TODAS = [ALTA, MEDIA, BAJA]
     POR_DEFECTO = MEDIA
+
+    @staticmethod
+    def validar(prioridad):
+        if prioridad not in Prioridad.TODAS:
+            raise ErrorDeNegocio("Prioridad invalida")
 
 
 class NuevaSolicitud:
@@ -38,6 +53,11 @@ class NuevaSolicitud:
         self.tipo = tipo
         self.descripcion = descripcion
         self.prioridad = prioridad
+
+    @staticmethod
+    def validar_descripcion(descripcion):
+        if len(descripcion.strip()) == 0:
+            raise ErrorDeNegocio("La descripcion es obligatoria")
 
 
 class Estudiante:
@@ -106,16 +126,20 @@ class Solicitud:
     def esta_cerrada(self):
         return self.estado in Estado.CERRADOS
 
+    def verificar_abierta(self):
+        if self.esta_cerrada():
+            raise ErrorDeNegocio("La solicitud ya esta cerrada")
+
     def puede_pasar_a(self, nuevo_estado):
         return nuevo_estado in Estado.TRANSICIONES.get(self.estado, [])
 
     def cambiar_estado(self, nuevo_estado):
         if not self.puede_pasar_a(nuevo_estado):
-            return False
+            raise ErrorDeNegocio("Transicion no permitida")
         self.estado = nuevo_estado
-        return True
 
     def asignar_responsable(self, id_responsable):
+        self.verificar_abierta()
         self.responsable = id_responsable
 
     def resumen(self):
