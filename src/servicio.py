@@ -77,9 +77,7 @@ class ServicioSolicitudes:
     def contar_por_estado(self):
         cantidades = {}
         for estado in Estado.TODOS:
-            cantidades[estado] = len([solicitud
-                                      for solicitud in self.solicitudes
-                                      if solicitud.estado == estado])
+            cantidades[estado] = len(self.filtrar("estado", estado))
         return cantidades
 
     def contar_sin_responsable(self):
@@ -89,8 +87,7 @@ class ServicioSolicitudes:
     def pendientes_por_prioridad(self):
         pendientes = []
         for prioridad in Prioridad.TODAS:
-            for solicitud in self.solicitudes:
-                if (solicitud.estado == Estado.PENDIENTE and
-                        solicitud.prioridad == prioridad):
+            for solicitud in self.filtrar("estado", Estado.PENDIENTE):
+                if solicitud.prioridad == prioridad:
                     pendientes.append(solicitud)
         return pendientes
