@@ -24,7 +24,8 @@ class RepositorioJSON:
             solicitudes = [Solicitud.desde_diccionario(dato)
                            for dato in datos["solicitudes"]]
         except (OSError, ValueError, KeyError, TypeError) as error:
-            raise ErrorDeDatos("No se pudo leer el archivo de datos") from error
+            raise ErrorDeDatos(
+                "No se pudo leer el archivo de datos") from error
         return estudiantes, responsables, solicitudes
 
     def guardar(self, estudiantes, responsables, solicitudes):

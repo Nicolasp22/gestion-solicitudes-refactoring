@@ -77,7 +77,8 @@ class ServicioSolicitudes:
     def contar_por_estado(self):
         cantidades = {}
         for estado in Estado.TODOS:
-            cantidades[estado] = len([solicitud for solicitud in self.solicitudes
+            cantidades[estado] = len([solicitud
+                                      for solicitud in self.solicitudes
                                       if solicitud.estado == estado])
         return cantidades
 
