@@ -1,0 +1,29 @@
+test_archivo_inexistente_avisa_y_sigue (test_comportamiento.PruebasComportamiento.test_archivo_inexistente_avisa_y_sigue) ... ok
+test_asignar_responsable_a_solicitud_cerrada (test_comportamiento.PruebasComportamiento.test_asignar_responsable_a_solicitud_cerrada) ... ok
+test_asignar_responsable_inexistente (test_comportamiento.PruebasComportamiento.test_asignar_responsable_inexistente) ... ok
+test_asignar_responsable_valido (test_comportamiento.PruebasComportamiento.test_asignar_responsable_valido) ... ok
+test_buscar_con_opcion_invalida (test_comportamiento.PruebasComportamiento.test_buscar_con_opcion_invalida) ... ok
+test_buscar_por_estado (test_comportamiento.PruebasComportamiento.test_buscar_por_estado) ... ok
+test_buscar_por_legajo (test_comportamiento.PruebasComportamiento.test_buscar_por_legajo) ... ok
+test_buscar_por_tipo (test_comportamiento.PruebasComportamiento.test_buscar_por_tipo) ... ok
+test_buscar_sin_resultados (test_comportamiento.PruebasComportamiento.test_buscar_sin_resultados) ... ok
+test_cambiar_estado_con_id_no_numerico (test_comportamiento.PruebasComportamiento.test_cambiar_estado_con_id_no_numerico) ... ok
+test_cambiar_estado_con_transicion_no_permitida (test_comportamiento.PruebasComportamiento.test_cambiar_estado_con_transicion_no_permitida) ... ok
+test_cambiar_estado_de_solicitud_cerrada (test_comportamiento.PruebasComportamiento.test_cambiar_estado_de_solicitud_cerrada) ... ok
+test_cambiar_estado_de_solicitud_inexistente (test_comportamiento.PruebasComportamiento.test_cambiar_estado_de_solicitud_inexistente) ... ok
+test_cambiar_estado_valido (test_comportamiento.PruebasComportamiento.test_cambiar_estado_valido) ... ok
+test_flujo_completo_de_una_solicitud (test_comportamiento.PruebasComportamiento.test_flujo_completo_de_una_solicitud) ... ok
+test_menu_se_muestra_y_sale (test_comportamiento.PruebasComportamiento.test_menu_se_muestra_y_sale) ... ok
+test_opcion_invalida_del_menu (test_comportamiento.PruebasComportamiento.test_opcion_invalida_del_menu) ... ok
+test_registrar_con_descripcion_vacia (test_comportamiento.PruebasComportamiento.test_registrar_con_descripcion_vacia) ... ok
+test_registrar_con_legajo_inexistente (test_comportamiento.PruebasComportamiento.test_registrar_con_legajo_inexistente) ... ok
+test_registrar_con_prioridad_invalida (test_comportamiento.PruebasComportamiento.test_registrar_con_prioridad_invalida) ... ok
+test_registrar_con_tipo_invalido (test_comportamiento.PruebasComportamiento.test_registrar_con_tipo_invalido) ... ok
+test_registrar_solicitud_valida (test_comportamiento.PruebasComportamiento.test_registrar_solicitud_valida) ... ok
+test_registrar_usa_prioridad_media_por_defecto (test_comportamiento.PruebasComportamiento.test_registrar_usa_prioridad_media_por_defecto) ... ok
+test_reporte_basico (test_comportamiento.PruebasComportamiento.test_reporte_basico) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.386s
+
+OK
