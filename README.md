@@ -36,6 +36,38 @@ python src/main.py
 
 El programa lee y escribe `datos.json` en la carpeta desde donde se ejecuta.
 
+## Estructura
+
+```
+src/            codigo (main, consola, servicio, modelos, repositorio)
+tests/          pruebas de comportamiento y unitarias
+datos/          datos de ejemplo (sinteticos)
+docs/           diagnostico, refactorings, pruebas, revision y decisiones
+```
+
+## Pruebas y calidad
+
+```
+python -m unittest discover -s tests
+python -m flake8 src tests --max-complexity=7     # opcional, requiere flake8
+```
+
+## Historia del trabajo
+
+Tags para recorrer el repositorio:
+
+| Tag | Que muestra |
+|---|---|
+| `estado-inicial` | Codigo original con problemas de diseno |
+| `etapa-diagnostico` | Diagnostico y code smells |
+| `etapa-refactoring` | Refactorings aplicados |
+| `etapa-pruebas` | Pruebas unitarias |
+| `etapa-docs` | Revision y documentacion final |
+| `estado-refactorizado` | Version final |
+
+Documentacion: `docs/diagnostico.md`, `docs/refactorings.md`, `docs/pruebas.md`,
+`docs/checklist-code-review.md`, `docs/decisiones-tecnicas.md`.
+
 ## Tecnologías
 
-Python 3, biblioteca estándar (json, datetime, unittest).
+Python 3, biblioteca estándar (json, datetime, unittest). flake8 solo como apoyo de revisión.
